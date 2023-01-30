@@ -48,6 +48,7 @@ func (t *TechDetecter) Detect(response *http.Response) (string, error) {
 	var product []string
 	for _, r := range t.FinerPrint {
 		var matches string
+
 		for i, match := range r.Matches {
 			if i < len(r.Matches)-1 {
 				matches = matches + "(" + match + ") || "
@@ -57,11 +58,13 @@ func (t *TechDetecter) Detect(response *http.Response) (string, error) {
 		}
 		ast, iss := env.Compile(matches)
 		if iss.Err() != nil {
-			return "", err
+			//fmt.Println(r.Matches)
+			continue
+			//return "", err
 		}
 		prg, err := env.Program(ast)
 		if err != nil {
-			return "", err
+			continue
 		}
 		out, _, err := prg.Eval(map[string]interface{}{
 			"body":   string(body),
@@ -73,7 +76,8 @@ func (t *TechDetecter) Detect(response *http.Response) (string, error) {
 			//"protocol": "",
 		})
 		if err != nil {
-			return "", err
+			//return "", err
+			continue
 		}
 
 		if out.(types.Bool) {
