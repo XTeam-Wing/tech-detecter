@@ -64,13 +64,13 @@ func (t *TechDetecter) Detect(response *http.Response) (string, error) {
 			return "", err
 		}
 		out, _, err := prg.Eval(map[string]interface{}{
-			"body":     string(body),
-			"title":    utils.GetTitle(string(body)),
-			"header":   headerInfo,
-			"server":   fmt.Sprintf("server: %v\n", response.Header["Server"]),
-			"cert":     utils.GetCerts(response),
-			"banner":   "",
-			"protocol": "",
+			"body":   string(body),
+			"title":  utils.GetTitle(string(body)),
+			"header": headerInfo,
+			"server": fmt.Sprintf("server: %v\n", response.Header["Server"]),
+			"cert":   utils.GetCerts(response),
+			//"banner":   "",
+			//"protocol": "",
 		})
 		if err != nil {
 			return "", err

@@ -34,6 +34,9 @@ func ParseYaml(path, filename string) (model.FingerPrint, error) {
 	}
 	var info model.TechInfo
 	err = json.Unmarshal(data, &info)
+	if err != nil {
+		return fingerPrint, err
+	}
 	fingerPrint.Infos = info.Product
 	return fingerPrint, nil
 

@@ -1,9 +1,15 @@
 # tech-detecter
 > 不喜欢httpx json格式的指纹,自己二开了一个Web指纹识别功能,替换它原来的指纹识别模块.
-
 欢迎大家pr共享指纹
 
 ## Usage
+匹配的信息
+```azure
+title
+header
+server
+cert
+```
 
 ```azure
 package main
