@@ -1,6 +1,8 @@
 info:
   company: Nginx
   product: nginx
+  lang: C
+  server: nginx
   category: 'Server'
 matches: |
   header.icontains(base64Decode("bmdpbng="))
