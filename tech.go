@@ -69,7 +69,7 @@ func (t *TechDetecter) Detect(response *http.Response) (string, error) {
 			"header": headerInfo,
 			"server": fmt.Sprintf("server: %v\n", response.Header["Server"]),
 			"cert":   utils.GetCerts(response),
-			//"banner":   "",
+			"banner": "",
 			//"protocol": "",
 		})
 		if err != nil {
