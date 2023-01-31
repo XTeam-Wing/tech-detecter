@@ -8,12 +8,12 @@ import (
 )
 
 func TestName(t *testing.T) {
-	resp, err := http.DefaultClient.Get("https://stg-data-in.ads.heytapmobi.com/")
+	resp, err := http.DefaultClient.Get("https://stg-data-in.ads.heytapmobi.com")
 	if err != nil {
 		log.Fatal(err)
 	}
 	tech := TechDetecter{}
-	err = tech.Init("/Users/wing/RedTeamWing/Wing/02-WingCoding/GoWing/tech-detecter/rules/")
+	err = tech.Init("/Users/wing/PycharmProjects/pythonProject/rules/")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -58,22 +58,21 @@ func (t *TechDetecter) Detect(response *http.Response) (string, error) {
 		}
 		ast, iss := env.Compile(matches)
 		if iss.Err() != nil {
-			//fmt.Println(r.Matches)
 			continue
-			//return "", err
 		}
 		prg, err := env.Program(ast)
 		if err != nil {
 			continue
 		}
 		out, _, err := prg.Eval(map[string]interface{}{
-			"body":   string(body),
-			"title":  utils.GetTitle(string(body)),
-			"header": headerInfo,
-			"server": fmt.Sprintf("server: %v\n", response.Header["Server"]),
-			"cert":   utils.GetCerts(response),
-			"banner": "",
-			//"protocol": "",
+			"body":     string(body),
+			"title":    utils.GetTitle(string(body)),
+			"header":   headerInfo,
+			"server":   fmt.Sprintf("server: %v\n", response.Header["Server"]),
+			"cert":     utils.GetCerts(response),
+			"banner":   "",
+			"protocol": "",
+			"port":     "",
 		})
 		if err != nil {
 			//return "", err
