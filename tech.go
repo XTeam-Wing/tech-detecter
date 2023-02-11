@@ -7,6 +7,7 @@ import (
 	"github.com/XTeam-Wing/tech-detecter/utils"
 	"github.com/google/cel-go/common/types"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 )
@@ -25,7 +26,8 @@ func (t *TechDetecter) Init(rulePath string) error {
 		for _, file := range files {
 			rule, err := utils.ParseYaml(rulePath, file)
 			if err != nil {
-				return err
+				fmt.Println(fmt.Sprintf("file %s error:%s", file, err))
+				continue
 			}
 			t.FinerPrint = append(t.FinerPrint, rule)
 		}
@@ -58,10 +60,12 @@ func (t *TechDetecter) Detect(response *http.Response) (string, error) {
 		}
 		ast, iss := env.Compile(matches)
 		if iss.Err() != nil {
+			log.Println(fmt.Sprintf("[X] product: %s rule Compile error", r.Infos))
 			continue
 		}
 		prg, err := env.Program(ast)
 		if err != nil {
+			log.Println(fmt.Sprintf("[X] product: %s rule prg error:%s", r.Infos, err.Error()))
 			continue
 		}
 		out, _, err := prg.Eval(map[string]interface{}{
@@ -69,13 +73,14 @@ func (t *TechDetecter) Detect(response *http.Response) (string, error) {
 			"title":    utils.GetTitle(string(body)),
 			"header":   headerInfo,
 			"server":   fmt.Sprintf("server: %v\n", response.Header["Server"]),
-			"cert":     utils.GetCerts(response),
-			"banner":   "",
+			"cert":     string(utils.GetCerts(response)),
+			"banner":   headerInfo,
 			"protocol": "",
 			"port":     "",
 		})
 		if err != nil {
-			//return "", err
+			log.Println(fmt.Sprintf("[X] product: %s rule Eval error:%s", r.Infos, err.Error()))
+
 			continue
 		}
 
